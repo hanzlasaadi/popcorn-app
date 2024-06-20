@@ -27,4 +27,3 @@ yarn-error.log*
 src/App-v3.js
 src/App.js
 src/useLocalStorageState.js
-src/useMovies.js
