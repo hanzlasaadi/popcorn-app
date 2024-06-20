@@ -56,10 +56,16 @@ const KEY = "49f516cc";
 export default function AppV2() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+
+  // const [watched, setWatched] = useState([]);
+  // Right way to use localStorage:
+  const [watched, setWatched] = useState(function () {
+    const data = JSON.parse(localStorage.getItem("watched"));
+    return data || [];
+  });
 
   /*
   useEffect(function () {
@@ -89,6 +95,13 @@ export default function AppV2() {
   }
 
   function handleAddWatched(movie) {
+    // BAD PRACTICE
+    // setWatched((watched) => {
+    //   const data = [...watched, movie];
+    //   localStorage.setItem("watched", JSON.stringify(data));
+    //   return data;
+    // });
+
     setWatched((watched) => [...watched, movie]);
   }
 
@@ -142,6 +155,20 @@ export default function AppV2() {
       };
     },
     [query]
+  );
+
+  // BAD PRACTICE
+  // useEffect(function () {
+  //   const data = JSON.parse(localStorage.getItem("watched"));
+  //   if (data) setWatched(data);
+  // }, []);
+
+  // Right way to use localStorage:
+  useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched]
   );
 
   return (
