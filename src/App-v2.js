@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 import useMovies from "./useMovies";
+import useLocalStorage from "./useLocalStorage";
 
 const tempMovieData = [
   {
@@ -63,10 +64,12 @@ export default function AppV2() {
 
   // const [watched, setWatched] = useState([]);
   // Right way to use localStorage:
-  const [watched, setWatched] = useState(function () {
-    const data = JSON.parse(localStorage.getItem("watched"));
-    return data || [];
-  });
+  // const [watched, setWatched] = useState(function () {
+  //   const data = JSON.parse(localStorage.getItem("watched"));
+  //   return data || [];
+  // });
+  // useLocalStorage Custom Hook
+  const [watched, setWatched] = useLocalStorage("watched", []);
 
   /*
   useEffect(function () {
@@ -117,12 +120,13 @@ export default function AppV2() {
   // }, []);
 
   // Right way to use localStorage:
-  useEffect(
-    function () {
-      localStorage.setItem("watched", JSON.stringify(watched));
-    },
-    [watched]
-  );
+  // used useLocalStorage Custom Hook
+  // useEffect(
+  //   function () {
+  //     localStorage.setItem("watched", JSON.stringify(watched));
+  //   },
+  //   [watched]
+  // );
 
   return (
     <>
