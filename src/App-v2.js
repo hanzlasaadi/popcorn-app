@@ -248,6 +248,23 @@ function Search({ query, setQuery }) {
     refElement.current.focus();
   }, []);
 
+  // select input on Enter key press
+  useEffect(function () {
+    function callback(e) {
+      if (document.activeElement === refElement.current) return;
+
+      if (e.code === "Enter") {
+        refElement.current.select();
+      }
+    }
+
+    document.addEventListener("keydown", callback);
+
+    return function () {
+      document.removeEventListener("keydown", callback);
+    };
+  }, []);
+
   // BAD PRACTICE
   // useEffect(function() {
   //   document.querySelector('.search').focus();
