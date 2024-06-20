@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 
 const tempMovieData = [
@@ -242,6 +242,17 @@ function Logo() {
 }
 
 function Search({ query, setQuery }) {
+  const refElement = useRef(null);
+
+  useEffect(function () {
+    refElement.current.focus();
+  }, []);
+
+  // BAD PRACTICE
+  // useEffect(function() {
+  //   document.querySelector('.search').focus();
+  // }, [query])
+
   return (
     <input
       className="search"
@@ -249,6 +260,7 @@ function Search({ query, setQuery }) {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
+      ref={refElement}
     />
   );
 }
