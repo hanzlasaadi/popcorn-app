@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 import useMovies from "./useMovies";
 import useLocalStorage from "./useLocalStorage";
+import useKey from "./useKey";
 
 const tempMovieData = [
   {
@@ -206,21 +207,14 @@ function Search({ query, setQuery }) {
   }, []);
 
   // select input on Enter key press
-  useEffect(function () {
-    function callback(e) {
-      if (document.activeElement === refElement.current) return;
+  function callbackEnter(e) {
+    if (document.activeElement === refElement.current) return;
 
-      if (e.code === "Enter") {
-        refElement.current.select();
-      }
+    if (e.code === "Enter") {
+      refElement.current.select();
     }
-
-    document.addEventListener("keydown", callback);
-
-    return function () {
-      document.removeEventListener("keydown", callback);
-    };
-  }, []);
+  }
+  useKey(callbackEnter);
 
   // BAD PRACTICE
   // useEffect(function() {
@@ -363,22 +357,12 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     onCloseMovie();
   }
 
-  useEffect(
-    function () {
-      function callback(e) {
-        if (e.code === "Escape") {
-          onCloseMovie();
-        }
-      }
-
-      document.addEventListener("keydown", callback);
-
-      return function () {
-        document.removeEventListener("keydown", callback);
-      };
-    },
-    [onCloseMovie]
-  );
+  function callbackEscape(e) {
+    if (e.code === "Escape") {
+      onCloseMovie();
+    }
+  }
+  useKey(callbackEscape);
 
   useEffect(
     function () {
