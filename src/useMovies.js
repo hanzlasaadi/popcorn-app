@@ -29,13 +29,15 @@ export default function useMovies(query) {
 
           setMovies(data.Search);
           setError("");
+          setIsLoading(false);
         } catch (err) {
           if (err.name !== "AbortError") {
             console.log(err.message);
             setError(err.message);
+            setIsLoading(false);
+          } else if (err.name === "AbortError") {
+            setIsLoading(true);
           }
-        } finally {
-          setIsLoading(false);
         }
       }
 
